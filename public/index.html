@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jimpitan Kampung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2ec;--surface:#fff;--ink:#1c2a24;--muted:#5d6e66;--line:#d3ddd5;--accent:#2f6b4f;--accent-ink:#fff;--lamp:#f0c23b;--danger:#b3412f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a18;--surface:#1b2623;--ink:#e8efe9;--muted:#9bada3;--line:#2f3f39;--accent:#6fbf94;--accent-ink:#10201a;--lamp:#f0c23b;--danger:#e27b68;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121a18;--surface:#1b2623;--ink:#e8efe9;--muted:#9bada3;--line:#2f3f39;--accent:#6fbf94;--accent-ink:#10201a;--lamp:#f0c23b;--danger:#e27b68;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Public Sans",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.big{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0}
+.top{display:flex;align-items:center;gap:10px}
+.lamp{width:14px;height:14px;border-radius:50%;background:var(--lamp);box-shadow:0 0 0 5px color-mix(in srgb,var(--lamp) 25%,transparent)}
+h1{font-size:1.5rem;font-weight:800}
+#rt{border:0;border-bottom:1px dashed var(--line);background:transparent;color:var(--muted);font:inherit;width:100%;max-width:260px;padding:2px 0}
+.hero{margin:22px 0 18px;padding:20px;border-radius:18px;background:var(--accent);color:var(--accent-ink)}
+.hero small{opacity:.85;display:block}
+.big{font-size:2.4rem;font-weight:800;line-height:1.1;margin:4px 0}
+.hero .row{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px;font-size:.9rem}
+nav{display:flex;gap:6px;background:var(--surface);padding:5px;border-radius:12px;border:1px solid var(--line);margin-bottom:16px}
+nav button{flex:1;border:0;background:transparent;color:var(--muted);font:600 .95rem inherit;font-family:inherit;padding:10px;border-radius:8px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lamp);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:.85rem;color:var(--muted);margin:10px 0 4px}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.primary{width:100%;margin-top:16px;padding:13px;border:0;border-radius:10px;background:var(--lamp);color:#2a2100;font:700 1rem "Bricolage Grotesque",sans-serif;cursor:pointer}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item b{font-weight:600}.item span{color:var(--muted);font-size:.85rem;display:block}
+.amt{font-weight:700;white-space:nowrap}
+.del{border:0;background:transparent;color:var(--danger);cursor:pointer;font:inherit;padding:6px}
+.empty{color:var(--muted);margin:6px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.add{display:flex;gap:8px}.add button{padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:600 1rem inherit;font-family:inherit;cursor:pointer}
+h2{font-size:1.1rem;margin-bottom:8px}
+.secondary{padding:9px 14px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;font:inherit;cursor:pointer;margin-top:10px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+[hidden]{display:none!important}
+.qrgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.qc{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;background:#fff;color:#111;break-inside:avoid}
+.qc .qr{display:flex;justify-content:center;margin-bottom:8px}.qc .qr img,.qc .qr canvas{max-width:100%;height:auto}
+.qc b{display:block;font-size:.9rem;line-height:1.3}
+.scan{border:2px solid var(--lamp)}
+.note{background:color-mix(in srgb,var(--lamp) 22%,var(--surface));border-radius:10px;padding:10px 12px;font-size:.9rem;margin-bottom:12px}
+@media print{main>*:not(#warga-tab),#warga-tab>*:not(#kartu),.noprint{display:none!important}body{background:#fff}}
+body.locked main>*:not(.top):not(#loginCard){display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><span class="lamp" aria-hidden="true"></span><h1>Jimpitan</h1><button class="secondary" id="keluar" hidden style="margin:0 0 0 auto">Keluar</button></div>
+  <input id="rt" aria-label="Nama RT atau kampung" placeholder="Ketik nama RT/RW atau dusun">
+  <div class="note" id="offline" hidden>Tidak bisa terhubung ke server. Periksa koneksi internet lalu muat ulang.</div>
+
+  <div class="card" id="loginCard" hidden>
+    <h2>Masuk</h2>
+    <label for="kode">Kata sandi pemilik atau PIN petugas</label>
+    <input type="password" id="kode" autocomplete="current-password">
+    <button class="primary" id="masuk">Masuk</button>
+  </div>
+  <section class="hero" aria-live="polite">
+    <small id="bulanLabel">Terkumpul bulan ini</small>
+    <div class="big" id="totalBulan">Rp0</div>
+    <div class="row"><span>Hari ini: <b id="totalHari">Rp0</b></span><span>Seluruh catatan: <b id="totalSemua">Rp0</b></span></div>
+  </section>
+
+  <nav role="tablist">
+    <button role="tab" data-tab="catat" aria-selected="true">Catat</button>
+    <button role="tab" data-tab="warga" aria-selected="false">Warga &amp; QR</button>
+    <button role="tab" data-tab="rekap" aria-selected="false">Rekap</button>
+  </nav>
+
+  <section id="catat">
+    <div class="card">
+      <label for="petugas" style="margin-top:0">Petugas ronda</label>
+      <input id="petugas" placeholder="Nama Anda">
+    </div>
+    <div class="card" id="usulanCard" hidden><h2>Menunggu persetujuan</h2><div id="listUsulan"></div></div>
+    <div class="card scan" id="scan" hidden>
+      <h2 id="scanNama"></h2>
+      <p class="empty" id="scanInfo"></p>
+      <label for="scanNominal">Jumlah (Rp)</label>
+      <input type="number" inputmode="numeric" id="scanNominal" min="0" step="100" placeholder="1000">
+      <div class="chips" id="scanChips"></div>
+      <button class="primary" id="scanSimpan">Simpan jimpitan</button>
+      <button class="secondary" id="scanTutup">Tutup</button>
+    </div>
+    <div class="card">
+      <h2>Catat manual</h2>
+      <label for="tgl">Tanggal ronda</label><input type="date" id="tgl">
+      <label for="warga">Rumah yang menyetor</label>
+      <select id="warga"></select>
+      <label for="nominal">Jumlah (Rp)</label>
+      <input type="number" inputmode="numeric" id="nominal" min="0" step="100" placeholder="1000">
+      <div class="chips" id="chips"></div>
+      <button class="primary" id="simpan">Simpan jimpitan</button>
+    </div>
+    <div class="card"><h2 id="judulHari">Catatan hari ini</h2><div id="listHari"></div></div>
+  </section>
+
+  <section id="warga-tab" hidden>
+    <div class="note noprint" id="infoLihat" hidden>Anda masuk sebagai petugas. Hanya pemilik yang bisa menambah atau menghapus warga, dan setoran Anda menunggu persetujuan pemilik.</div>
+    <div class="card noprint" id="formWarga">
+      <h2>Tambah rumah warga</h2>
+      <div class="add"><input id="namaWarga" placeholder="Nama / No. rumah, mis. Pak Slamet (A3)"><button id="tambah">Tambah</button></div>
+    </div>
+    <div class="card" id="kartu">
+      <h2>Kartu QR warga</h2>
+      <p class="empty noprint">Cetak atau tempel kartu ini di depan rumah. Petugas ronda cukup memindai dengan kamera HP, lalu isi jumlahnya.</p>
+      <div class="qrgrid" id="qrgrid"></div>
+      <button class="secondary noprint" id="cetak">Cetak semua kartu</button>
+    </div>
+    <div class="card noprint"><h2>Daftar warga</h2><div id="listWarga"></div></div>
+  </section>
+
+  <section id="rekap" hidden>
+    <div class="card">
+      <label for="bulan">Bulan</label>
+      <input type="month" id="bulan">
+      <h2 style="margin-top:16px" id="judulRekap">Total per warga</h2>
+      <div id="perWarga"></div>
+      <div class="chips">
+        <button class="secondary" id="unduhXlsx">Unduh Excel (.xlsx)</button>
+        <button class="secondary" id="unduhCsv">Unduh CSV</button>
+        <button class="secondary" id="salin">Salin untuk WhatsApp</button>
+      </div>
+    </div>
+    <div class="card"><h2>Riwayat bulan ini</h2><div id="riwayat"></div></div>
+  </section>
+</main>
+<div id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const BASE=location.origin+location.pathname;
+let W=[],T=[],U=[],db=null,role=null,canEdit=false,scanId=null;
+const $=id=>document.getElementById(id);
+const rp=n=>"Rp"+Number(n||0).toLocaleString("id-ID");
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nama=id=>(W.find(w=>w.id===id)||{nama:"(warga dihapus)"}).nama;
+const tglIndo=t=>new Date(t+"T00:00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const sum=a=>a.reduce((s,c)=>s+c.jumlah,0);
+let toastT;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2200)}
+const lsGet=k=>{try{return localStorage.getItem(k)||""}catch(e){return""}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+
+$("tgl").value=today();$("bulan").value=today().slice(0,7);
+$("rt").value=lsGet("jimpitan-rt");$("rt").oninput=e=>lsSet("jimpitan-rt",e.target.value);
+$("petugas").value=lsGet("jimpitan-petugas");$("petugas").oninput=e=>lsSet("jimpitan-petugas",e.target.value);
+function chips(box,input){[500,1000,2000,5000].forEach(n=>{const b=document.createElement("button");b.className="chip";b.textContent=rp(n);b.onclick=()=>{input.value=n};box.appendChild(b)})}
+chips($("chips"),$("nominal"));chips($("scanChips"),$("scanNominal"));
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
+  ["catat","warga-tab","rekap"].forEach(id=>$(id).hidden=true);
+  $(b.dataset.tab==="warga"?"warga-tab":b.dataset.tab).hidden=false;
+});
+
+async function tambahSetoran(w,j){
+  if(!db)return toast("Data bersama belum tersambung");
+  const p=$("petugas").value.trim();
+  if(!p)return toast("Isi nama petugas dulu");
+  if(!j||j<=0)return toast("Isi jumlah jimpitan");
+  try{await api("POST","/api/setoran",{tgl:$("tgl").value||today(),warga:w,jumlah:j,petugas:p});await load();toast(canEdit?"Tersimpan: "+rp(j):"Terkirim: "+rp(j)+". Menunggu persetujuan pemilik.");return true}
+  catch(e){toast("Gagal menyimpan. Anda perlu akses Kontributor.")}
+}
+$("simpan").onclick=async()=>{const w=$("warga").value;if(!w)return toast("Tambahkan warga dulu");if(await tambahSetoran(w,parseInt($("nominal").value,10)))$("nominal").value=""};
+$("scanSimpan").onclick=async()=>{
+  const t=$("tgl").value;$("tgl").value=today();
+  if(await tambahSetoran(scanId,parseInt($("scanNominal").value,10))){$("scanNominal").value="";closeScan()}
+  $("tgl").value=t;
+};
+function closeScan(){scanId=null;try{history.replaceState(null,"",location.pathname+location.search)}catch(e){try{location.hash=""}catch(_){}}render()}
+$("scanTutup").onclick=closeScan;
+function readHash(){const m=location.hash.match(/^#rumah-([A-Za-z0-9]+)$/);scanId=m?m[1]:null;render()}
+window.addEventListener("hashchange",readHash);
+
+$("tambah").onclick=async()=>{const v=$("namaWarga").value.trim();if(!v)return toast("Isi nama warga dulu");
+  try{await api("POST","/api/warga",{nama:v});await load();$("namaWarga").value="";toast("Warga ditambahkan")}catch(e){toast("Hanya Editor yang bisa menambah warga")}};
+$("namaWarga").onkeydown=e=>{if(e.key==="Enter")$("tambah").click()};
+$("tgl").onchange=render;$("bulan").onchange=render;
+$("cetak").onclick=()=>{try{window.print()}catch(e){toast("Cetak tidak tersedia. Gunakan tangkapan layar.")}};
+
+document.addEventListener("click",async e=>{
+  const d=e.target.closest("[data-del]");if(!d)return;
+  const [kind,id]=d.dataset.del.split(":");
+  if(kind==="warga"&&d.dataset.armed!=="1"){d.dataset.armed="1";d.textContent="Yakin hapus?";setTimeout(()=>{d.dataset.armed="";d.textContent="Hapus"},3000);return}
+  try{await api("DELETE","/api/"+kind+"/"+id);await load();toast("Terhapus")}catch(err){toast("Gagal menghapus"+(err&&err.code?" ("+err.code+")":""))}
+});
+
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-ok]");if(!b)return;const c=U.find(x=>x.id===b.dataset.ok);if(!c)return;
+  try{await api("POST","/api/usulan/"+c.id+"/setujui");await load();toast("Disetujui")}catch(err){toast("Gagal menyetujui")}});
+function row(c,showDate){return `<div class="item"><div><b>${esc(nama(c.warga))}</b><span>${showDate?tglIndo(c.tgl)+" · ":""}Petugas: ${esc(c.petugas||"-")}</span></div><div><span class="amt">${rp(c.jumlah)}</span> ${canEdit?`<button class="del" aria-label="Hapus catatan" data-del="setoran:${c.id}">Hapus</button>`:""}</div></div>`}
+
+let qrKey="";
+function render(){
+  const t=$("tgl").value||today(),bln=$("bulan").value||today().slice(0,7),thisM=today().slice(0,7);
+  $("warga").innerHTML=W.length?W.map(w=>`<option value="${w.id}">${esc(w.nama)}</option>`).join(""):`<option value="">Belum ada warga</option>`;
+  // scan card
+  const sw=scanId&&W.find(w=>w.id===scanId);
+  $("scan").hidden=!scanId;
+  if(scanId){
+    $("scanNama").textContent=sw?sw.nama:"QR tidak dikenali";
+    const sudah=sw?sum(T.filter(c=>c.warga===scanId&&c.tgl===today())):0;
+    $("scanInfo").textContent=sw?(sudah?"Sudah setor hari ini: "+rp(sudah)+". Simpan lagi hanya jika ini setoran tambahan.":"Belum setor hari ini."):"Warga ini tidak ditemukan. Minta kartu QR baru ke pengurus.";
+    $("scanSimpan").hidden=!sw;
+  }
+  $("formWarga").hidden=!canEdit;
+  $("usulanCard").hidden=!(canEdit&&U.length);
+  $("infoLihat").hidden=canEdit||!db;
+  $("listUsulan").innerHTML=U.map(c=>`<div class="item"><div><b>${esc(nama(c.warga))}</b><span>${tglIndo(c.tgl)} · Petugas: ${esc(c.petugas||"-")}</span></div><div><span class="amt">${rp(c.jumlah)}</span> <button class="del" style="color:var(--accent)" data-ok="${c.id}">Setujui</button> <button class="del" data-del="usulan:${c.id}">Tolak</button></div></div>`).join("");
+  $("listWarga").innerHTML=W.length?W.map(w=>`<div class="item"><b>${esc(w.nama)}</b>${canEdit?`<button class="del" data-del="warga:${w.id}">Hapus</button>`:""}</div>`).join(""):`<p class="empty">Belum ada warga. Tambahkan rumah pertama di atas.</p>`;
+  const k=W.map(w=>w.id+w.nama).join("|");
+  if(k!==qrKey){qrKey=k;const g=$("qrgrid");g.innerHTML="";
+    W.forEach(w=>{const c=document.createElement("div");c.className="qc";const q=document.createElement("div");q.className="qr";const n=document.createElement("b");n.textContent=w.nama;c.append(q,n);g.appendChild(c);
+      try{new QRCode(q,{text:BASE+"#rumah-"+w.id,width:132,height:132,correctLevel:QRCode.CorrectLevel.M})}catch(e){q.textContent="QR gagal dibuat"}});
+    if(!W.length)g.innerHTML=`<p class="empty">Kartu QR muncul setelah ada warga.</p>`}
+  const hari=T.filter(c=>c.tgl===t);
+  $("judulHari").textContent=t===today()?"Catatan hari ini":"Catatan "+tglIndo(t);
+  $("listHari").innerHTML=hari.length?hari.map(c=>row(c,false)).join("")+`<div class="item"><b>Total</b><span class="amt">${rp(sum(hari))}</span></div>`:`<p class="empty">Belum ada setoran di tanggal ini.</p>`;
+  $("totalBulan").textContent=rp(sum(T.filter(c=>c.tgl.startsWith(thisM))));
+  $("totalHari").textContent=rp(sum(T.filter(c=>c.tgl===today())));
+  $("totalSemua").textContent=rp(sum(T));
+  $("bulanLabel").textContent="Terkumpul bulan "+new Date(thisM+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  const bc=T.filter(c=>c.tgl.startsWith(bln));
+  const per={};bc.forEach(c=>per[c.warga]=(per[c.warga]||0)+c.jumlah);
+  const ids=Object.keys(per).sort((a,b)=>per[b]-per[a]);
+  $("judulRekap").textContent="Total per warga, "+new Date(bln+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  $("perWarga").innerHTML=ids.length?ids.map(id=>`<div class="item"><div><b>${esc(nama(id))}</b><span>Tanggal setor: ${[...new Set(bc.filter(c=>c.warga===id).map(c=>+c.tgl.slice(8)))].sort((a,b)=>a-b).join(", ")}</span></div><span class="amt">${rp(per[id])}</span></div>`).join("")+`<div class="item"><b>Total</b><span class="amt">${rp(sum(bc))}</span></div>`:`<p class="empty">Belum ada setoran di bulan ini.</p>`;
+  $("riwayat").innerHTML=bc.length?bc.map(c=>row(c,true)).join(""):`<p class="empty">Belum ada riwayat.</p>`;
+}
+$("salin").onclick=async()=>{
+  const bln=$("bulan").value,bc=T.filter(c=>c.tgl.startsWith(bln));
+  const per={};bc.forEach(c=>per[c.warga]=(per[c.warga]||0)+c.jumlah);
+  const bl=new Date(bln+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  const txt="Rekap Jimpitan "+($("rt").value?$("rt").value+" ":"")+"– "+bl+"\n"+Object.keys(per).map(id=>"• "+nama(id)+": "+rp(per[id])).join("\n")+"\nTotal: "+rp(sum(bc));
+  try{await navigator.clipboard.writeText(txt);toast("Rekap disalin")}catch(e){prompt("Salin teks rekap ini:",txt)}
+};
+function dataBulan(){
+  const bln=$("bulan").value,bc=T.filter(c=>c.tgl.startsWith(bln));
+  const BL=new Date(bln+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  const per={};bc.forEach(c=>{const p=per[c.warga]||(per[c.warga]={n:0,t:0,d:{}});p.n++;p.t+=c.jumlah;const dd=+c.tgl.slice(8);p.d[dd]=(p.d[dd]||0)+c.jumlah});
+  const ids=Object.keys(per).sort((a,b)=>per[b].t-per[a].t);
+  const hari=new Date(+bln.slice(0,4),+bln.slice(5,7),0).getDate();
+  const rng=Array.from({length:hari},(_,i)=>i+1);
+  const rekap=[["Bulan","Nama / Rumah","Tanggal setor","Jumlah setor (kali)","Total (Rp)"],...ids.map(id=>[BL,nama(id),Object.keys(per[id].d).map(Number).sort((a,b)=>a-b).join(", "),per[id].n,per[id].t]),[BL,"TOTAL","",bc.length,sum(bc)]];
+  const riwayat=[["Bulan","Tanggal","Nama / Rumah","Jumlah (Rp)","Petugas"],...bc.slice().reverse().map(c=>[BL,c.tgl,nama(c.warga),c.jumlah,c.petugas||""])];
+  const grid=[["Rekap jimpitan "+BL],["Nama / Rumah",...rng,"Total"],...ids.map(id=>[nama(id),...rng.map(d=>per[id].d[d]||""),per[id].t]),["TOTAL",...rng.map(d=>ids.reduce((s,id)=>s+(per[id].d[d]||0),0)||""),sum(bc)]];
+  return{bln,rekap,riwayat,grid,kosong:!bc.length};
+}
+async function unduh(fmt){
+  const {bln,rekap,riwayat,grid,kosong}=dataBulan();
+  if(kosong)return toast("Belum ada setoran di bulan ini");
+  let data,filename="jimpitan-"+bln+"."+fmt;
+  if(fmt==="xlsx"){
+    if(!window.XLSX)return toast("Pustaka Excel gagal dimuat. Coba CSV.");
+    const wb=XLSX.utils.book_new();
+    const a=XLSX.utils.aoa_to_sheet(rekap);a["!cols"]=[{wch:16},{wch:28},{wch:34},{wch:18},{wch:14}];
+    const b=XLSX.utils.aoa_to_sheet(riwayat);b["!cols"]=[{wch:16},{wch:12},{wch:28},{wch:14},{wch:18}];
+    const g=XLSX.utils.aoa_to_sheet(grid);g["!cols"]=[{wch:28},...Array(grid[1].length-2).fill({wch:6}),{wch:12}];
+    XLSX.utils.book_append_sheet(wb,a,"Rekap");XLSX.utils.book_append_sheet(wb,g,"Per Tanggal");XLSX.utils.book_append_sheet(wb,b,"Riwayat");
+    data=XLSX.write(wb,{bookType:"xlsx",type:"array"});
+  }else{
+    const cell=v=>{let s=String(v);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+    const csv=r=>r.map(x=>x.map(cell).join(",")).join("\n");
+    data="\ufeff"+csv(rekap)+"\n\n"+csv(grid)+"\n\n"+csv(riwayat);
+  }
+  try{saveFile(filename,data);toast("File siap: "+filename)}catch(e){toast("Unduhan gagal. Coba lagi.")}
+}
+$("unduhXlsx").onclick=()=>unduh("xlsx");$("unduhCsv").onclick=()=>unduh("csv");
+const byTs=(a,b)=>(b.tgl.localeCompare(a.tgl))||((b.ts||0)-(a.ts||0));
+render();readHash();
+async function api(m,u,b){
+  const r=await fetch(u,{method:m,credentials:"same-origin",headers:{"Content-Type":"application/json","X-Requested-With":"jimpitan"},body:b?JSON.stringify(b):undefined});
+  if(r.status===401){showLogin();throw new Error("auth")}
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"gagal");return j}
+function showLogin(){db=null;document.body.classList.add("locked");$("loginCard").hidden=false;$("keluar").hidden=true}
+async function load(){
+  const s=await api("GET","/api/state");
+  role=s.role;canEdit=role==="owner";db=true;
+  W=s.warga.sort((a,b)=>String(a.nama).localeCompare(String(b.nama)));
+  T=s.setoran.filter(c=>typeof c.tgl==="string"&&typeof c.jumlah==="number").sort(byTs);
+  U=s.usulan.filter(c=>typeof c.tgl==="string"&&typeof c.jumlah==="number").sort((a,b)=>(a.ts||0)-(b.ts||0));
+  document.body.classList.remove("locked");$("loginCard").hidden=true;$("keluar").hidden=false;render()}
+function saveFile(name,data){
+  const b=new Blob([data],{type:name.endsWith(".csv")?"text/csv;charset=utf-8":"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+$("masuk").onclick=async()=>{try{await api("POST","/api/login",{kode:$("kode").value});$("kode").value="";await load()}catch(e){toast("Kode salah atau terlalu banyak percobaan")}};
+$("kode").onkeydown=e=>{if(e.key==="Enter")$("masuk").click()};
+$("keluar").onclick=async()=>{try{await api("POST","/api/logout")}catch(e){}showLogin()};
+load().catch(e=>{if(e.message!=="auth")$("offline").hidden=false});
+setInterval(()=>{if(db&&!document.hidden)load().catch(()=>{})},10000);
+</script>
+</body>
+</html>
